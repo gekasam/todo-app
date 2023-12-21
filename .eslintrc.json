@@ -38,7 +38,7 @@
         "semi": true
       }
     ],
-    "linebreak-style": [0, "unix"],
+    "linebreak-style": [0, "windows"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "react/react-in-jsx-scope": "off",
