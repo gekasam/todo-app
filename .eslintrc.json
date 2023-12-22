@@ -40,7 +40,7 @@
         "semi": true
       }
     ],
-    "linebreak-style": [1, "windows"],
+    "linebreak-style": [2, "windows"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "react/react-in-jsx-scope": "off",
