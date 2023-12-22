@@ -3,7 +3,6 @@ function App() {
     <div className="App">
       <div></div>
       <div></div>
-      <div></div>
     </div>
   );
 }
