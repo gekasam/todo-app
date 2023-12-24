@@ -4,6 +4,12 @@ import NewTaskForm from './components/new-task-form';
 import TaskList from './components/task-list';
 import Footer from './components/footer';
 
+const taskData = [
+  { class: 'completed', value: 'Completed task' },
+  { class: 'editing', value: 'Editing task' },
+  { class: 'active', value: 'Active task' },
+];
+
 function App() {
   return (
     <div className="App">
@@ -13,7 +19,7 @@ function App() {
           <NewTaskForm />
         </header>
         <section className="main">
-          <TaskList />
+          <TaskList data={taskData} />
           <Footer />
         </section>
       </section>
