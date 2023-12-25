@@ -1,18 +1,11 @@
 import Task from '../task';
 
-export default function TaskList({ data }) {
-  const elements = data.map((element) =>
-    element.class !== 'editing' ? (
-      <li className={element.class} key={element.value + Date.now()}>
-        <Task value={element.value} />
-      </li>
-    ) : (
-      <li className={element.class} key={element.value + Date.now()}>
-        <Task value={element.value} />
-        <input type="text" className="edit" value={element.value} />
-      </li>
-    )
-  );
+export default function TaskList({ data, onToggleStatus, onDeleteTask }) {
+  const elements = data.map((element) => (
+    <li className={element.taskStatus} key={element.uid}>
+      <Task data={element} onToggleStatus={onToggleStatus} onDeleteTask={onDeleteTask} />
+    </li>
+  ));
 
   return <ul className="todo-list">{elements}</ul>;
 }

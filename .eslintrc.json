@@ -53,7 +53,6 @@
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "newlines-between": "always"
       }
-    ],
-    "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" }]
+    ]
   }
 }

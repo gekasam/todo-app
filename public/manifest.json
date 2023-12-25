@@ -1,0 +1,6 @@
+{
+  "name": "My Todo App",
+  "short_name": "TodoApp",
+  "description": "An Todo App",
+  "display": "browser"
+}
