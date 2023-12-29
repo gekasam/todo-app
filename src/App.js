@@ -11,7 +11,7 @@ export default class App extends Component {
     this.state = {
       taskData: [
         { taskStatus: 'completed', value: 'Completed task', uid: uniqid.time('task-'), date: Date.now() },
-        { taskStatus: 'editing', value: 'Editing task', uid: uniqid.time('task-'), date: Date.now() },
+        { taskStatus: 'editing', value: 'Try edit and press enter', uid: uniqid.time('task-'), date: Date.now() },
         { taskStatus: 'active', value: 'Active task', uid: uniqid.time('task-'), date: Date.now() },
       ],
       filter: 'all',

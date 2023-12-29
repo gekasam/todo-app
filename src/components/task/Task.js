@@ -52,7 +52,7 @@ export default class Task extends Component {
             taskEdit(editValue, uid);
           }}
         >
-          <input type="text" className="edit" value={editValue} onChange={this.handlerEdit} />
+          <input name="edit-input" type="text" className="edit" value={editValue} onChange={this.handlerEdit} />
         </form>
       </>
     );

@@ -31,6 +31,7 @@ export default class NewTaskForm extends Component {
     return (
       <form onSubmit={this.handlerSubmit}>
         <input
+          name="new-task-input"
           className="new-todo"
           placeholder="What needs to be done?"
           value={inputValue}
