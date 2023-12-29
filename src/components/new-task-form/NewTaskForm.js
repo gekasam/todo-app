@@ -23,7 +23,10 @@ export default class NewTaskForm extends Component {
     const { onAddTask } = this.props;
 
     e.preventDefault();
-    onAddTask(inputValue);
+    this.setState({
+      inputValue: '',
+    });
+    if (inputValue) onAddTask(inputValue);
   }
 
   render() {

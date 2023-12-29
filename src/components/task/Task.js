@@ -49,7 +49,7 @@ export default class Task extends Component {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            taskEdit(editValue, uid);
+            if (editValue) taskEdit(editValue, uid);
           }}
         >
           <input name="edit-input" type="text" className="edit" value={editValue} onChange={this.handlerEdit} />
