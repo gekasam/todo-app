@@ -1,75 +1,73 @@
 import { Component } from 'react';
-import { formatDistanceToNow } from 'date-fns';
+import PropTypes from 'prop-types';
 
-function CreatedAgo() {
-  return <span className="created">created {formatDistanceToNow(Date.now(), { includeSeconds: true })} ago</span>;
-}
+import CreatedAgo from '../created-ago';
 
 export default class Task extends Component {
-  constructor() {
+  constructor({ data: { value } }) {
     super();
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
-      done: false,
+      editValue: value,
     };
+
+    this.checkedHandler = (status) => status !== 'active';
+    this.handlerEdit = this.handlerEdit.bind(this);
+  }
+
+  handlerEdit(e) {
+    this.setState({
+      editValue: e.target.value,
+    });
   }
 
   render() {
     const {
-      data: { taskStatus, value, uid },
+      data: { taskStatus, value, uid, date },
       onToggleStatus,
       onDeleteTask,
+      onEditTask,
+      taskEdit,
     } = this.props;
-
-    return taskStatus !== 'editing' ? (
-      <div className="view">
-        <input id={uid} className="toggle" type="checkbox" onClick={() => onToggleStatus(uid)} />
-        <label htmlFor={uid}>
-          <span className="description">{value}</span>
-          <CreatedAgo />
-        </label>
-        <button type="button" className="icon icon-edit" />
-        <button type="button" className="icon icon-destroy" onClick={() => onDeleteTask(uid)} />
-      </div>
-    ) : (
+    const { editValue } = this.state;
+    return (
       <>
         <div className="view">
-          <input id={uid} className="toggle" type="checkbox" />
+          <input
+            id={uid}
+            className="toggle"
+            type="checkbox"
+            checked={this.checkedHandler(taskStatus)}
+            onChange={() => onToggleStatus(uid)}
+          />
           <label htmlFor={uid}>
             <span className="description">{value}</span>
-            <CreatedAgo />
+            <CreatedAgo date={date} />
           </label>
-          <button type="button" className="icon icon-edit" />
-          <button type="button" className="icon icon-destroy" />
+          <button type="button" className="icon icon-edit" onClick={() => onEditTask(uid)} />
+          <button type="button" className="icon icon-destroy" onClick={() => onDeleteTask(uid)} />
         </div>
-        <input type="text" className="edit" value={value} />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            taskEdit(editValue, uid);
+          }}
+        >
+          <input type="text" className="edit" value={editValue} onChange={this.handlerEdit} />
+        </form>
       </>
     );
   }
 }
 
-/* </li>
-      <li className="editing">
-        <div className="view">
-          <label>
-            <input className="toggle" type="checkbox" />
-            <span className="description">Editing task</span>
-            <span className="created">created 5 minutes ago</span>
-          </label>
-          <button type="button" className="icon icon-edit" />
-          <button type="button" className="icon icon-destroy" />
-        </div>
-        <input type="text" className="edit" value="Editing task" />
-      </li>
-      <li className="active">
-        <div className="view">
-          <label>
-            <input className="toggle" type="checkbox" />
-            <span className="description">Active task</span>
-            <span className="created">created 5 minutes ago</span>
-          </label>
-          <button type="button" className="icon icon-edit" />
-          <button type="button" className="icon icon-destroy" />
-        </div>
-      </li>
-    </> */
+Task.propTypes = {
+  data: PropTypes.shape({
+    taskStatus: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    date: PropTypes.number.isRequired,
+  }).isRequired,
+  onToggleStatus: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
+  taskEdit: PropTypes.func.isRequired,
+};
