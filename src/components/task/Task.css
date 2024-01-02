@@ -1,0 +1,7 @@
+.todo-list li .disabled {
+  color: grey;
+}
+
+.todo-list li .disabled:hover {
+  color: grey;
+}

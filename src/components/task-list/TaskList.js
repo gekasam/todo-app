@@ -6,7 +6,7 @@ import './TaskList.css';
 
 export default function TaskList({ data, filter, onToggleStatus, onDeleteTask, onEditTask, taskEdit }) {
   function handlerFilter(status) {
-    if (filter === 'all' || status === 'editing') {
+    if (filter === 'all' || (filter === 'active' && status === 'editing')) {
       return '';
     }
 

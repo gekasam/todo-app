@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import CreatedAgo from '../created-ago';
+import './Task.css';
 
 export default class Task extends Component {
   constructor({ data: { value } }) {
@@ -29,6 +30,7 @@ export default class Task extends Component {
       taskEdit,
     } = this.props;
     const { editValue } = this.state;
+    const editClass = `icon icon-edit${taskStatus === 'completed' ? ' disabled' : ''}`;
     return (
       <>
         <div className="view">
@@ -43,7 +45,12 @@ export default class Task extends Component {
             <span className="description">{value}</span>
             <CreatedAgo date={date} />
           </label>
-          <button type="button" className="icon icon-edit" onClick={() => onEditTask(uid)} />
+          <button
+            type="button"
+            className={editClass}
+            onClick={() => onEditTask(uid)}
+            disabled={taskStatus === 'completed'}
+          />
           <button type="button" className="icon icon-destroy" onClick={() => onDeleteTask(uid)} />
         </div>
         <form
