@@ -10,18 +10,36 @@ export default class App extends Component {
     super();
     this.state = {
       taskData: [
-        { taskStatus: 'completed', value: 'Completed task', uid: uniqid.time('task-'), date: Date.now() },
-        { taskStatus: 'editing', value: 'Try edit and press enter', uid: uniqid.time('task-'), date: Date.now() },
-        { taskStatus: 'active', value: 'Active task', uid: uniqid.time('task-'), date: Date.now() },
+        {
+          taskStatus: 'completed',
+          value: 'Completed task',
+          uid: uniqid.time('task-'),
+          date: Date.now(),
+          timeToComplete: 10,
+        },
+        {
+          taskStatus: 'editing',
+          value: 'Try edit and press enter',
+          uid: uniqid.time('task-'),
+          date: Date.now(),
+          timeToComplete: 10,
+        },
+        { taskStatus: 'active', value: 'Active task', uid: uniqid.time('task-'), date: Date.now(), timeToComplete: 10 },
       ],
       filter: 'all',
     };
 
-    this.onAddTask = (value) => {
+    this.onAddTask = (value, timeInSeconds) => {
       this.setState(({ taskData }) => {
         const newTaskData = taskData.map((obj) => ({ ...obj }));
 
-        newTaskData.unshift({ taskStatus: 'active', value, uid: uniqid.time('task-'), date: Date.now() });
+        newTaskData.unshift({
+          taskStatus: 'active',
+          value,
+          uid: uniqid.time('task-'),
+          date: Date.now(),
+          timeToComplete: timeInSeconds,
+        });
         return {
           taskData: newTaskData,
         };

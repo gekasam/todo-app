@@ -5,42 +5,91 @@ export default class NewTaskForm extends Component {
   constructor() {
     super();
     this.state = {
-      inputValue: '',
+      inputNewTask: '',
+      inputMinutes: '',
+      inputSeconds: '',
     };
 
-    this.handlerInput = this.handlerInput.bind(this);
+    this.handlerNewTask = this.handlerNewTask.bind(this);
+    this.handlerMin = this.handlerMin.bind(this);
+    this.handlerSec = this.handlerSec.bind(this);
+    this.handlerKeyDown = this.handlerKeyDown.bind(this);
     this.handlerSubmit = this.handlerSubmit.bind(this);
   }
 
-  handlerInput(e) {
+  handlerNewTask(e) {
     this.setState({
-      inputValue: e.target.value,
+      inputNewTask: e.target.value,
     });
   }
 
-  handlerSubmit(e) {
-    const { inputValue } = this.state;
+  handlerMin(e) {
+    if (e.target.value.match(/^\d*$/) && e.target.value <= 60) {
+      this.setState({
+        inputMinutes: e.target.value,
+      });
+    }
+  }
+
+  handlerSec(e) {
+    if (e.target.value.match(/^\d*$/) && e.target.value <= 60) {
+      this.setState({
+        inputSeconds: e.target.value,
+      });
+    }
+  }
+
+  handlerKeyDown(e) {
+    if (e.key === 'Enter') {
+      this.handlerSubmit();
+    }
+  }
+
+  handlerSubmit() {
+    const { inputNewTask, inputMinutes, inputSeconds } = this.state;
     const { onAddTask } = this.props;
 
-    e.preventDefault();
-    this.setState({
-      inputValue: '',
-    });
-    if (inputValue) onAddTask(inputValue);
+    const timeInSeconds = inputMinutes * 60 + +inputSeconds;
+    /* e.preventDefault(); */
+    if (inputNewTask && (inputMinutes || inputSeconds)) {
+      this.setState({
+        inputNewTask: '',
+        inputMinutes: '',
+        inputSeconds: '',
+      });
+      onAddTask(inputNewTask, timeInSeconds);
+    }
   }
 
   render() {
-    const { inputValue } = this.state;
+    const { inputNewTask, inputMinutes, inputSeconds } = this.state;
     return (
-      <form onSubmit={this.handlerSubmit}>
+      <form className="new-todo-form">
         <input
           name="new-task-input"
           className="new-todo"
           placeholder="What needs to be done?"
-          value={inputValue}
-          onChange={this.handlerInput}
+          value={inputNewTask}
+          onChange={this.handlerNewTask}
+          onKeyDown={this.handlerKeyDown}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
+        />
+        <input
+          name="min-input"
+          className="new-todo-form__timer"
+          placeholder="Min"
+          value={inputMinutes}
+          onChange={this.handlerMin}
+          onKeyDown={this.handlerKeyDown}
+        />
+        <input
+          name="sec-input"
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          value={inputSeconds}
+          onChange={this.handlerSec}
+          onKeyDown={this.handlerKeyDown}
         />
       </form>
     );

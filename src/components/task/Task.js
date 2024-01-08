@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import CreatedAgo from '../created-ago';
+import Timer from '../timer';
 import './Task.css';
 
 export default class Task extends Component {
@@ -23,7 +24,7 @@ export default class Task extends Component {
 
   render() {
     const {
-      data: { taskStatus, value, uid, date },
+      data: { taskStatus, value, uid, date, timeToComplete },
       onToggleStatus,
       onDeleteTask,
       onEditTask,
@@ -42,7 +43,8 @@ export default class Task extends Component {
             onChange={() => onToggleStatus(uid)}
           />
           <label htmlFor={uid}>
-            <span className="description">{value}</span>
+            <span className="title">{value}</span>
+            <Timer timeToComplete={timeToComplete} />
             <CreatedAgo date={date} />
           </label>
           <button

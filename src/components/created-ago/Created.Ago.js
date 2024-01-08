@@ -27,7 +27,7 @@ export default class CreatedAgo extends Component {
 
   render() {
     const { createdAgo } = this.state;
-    return <span className="created">created {createdAgo} ago</span>;
+    return <span className="description">created {createdAgo} ago</span>;
   }
 }
 
