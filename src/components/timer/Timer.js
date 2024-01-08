@@ -22,6 +22,10 @@ export default class Timer extends Component {
     });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   handlerPlay() {
     this.setState({
       timerState: 1,
