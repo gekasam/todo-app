@@ -44,7 +44,7 @@ export default class Task extends Component {
           />
           <label htmlFor={uid}>
             <span className="title">{value}</span>
-            <Timer timeToComplete={timeToComplete} />
+            <Timer taskStatus={taskStatus} timeToComplete={timeToComplete} />
             <CreatedAgo date={date} />
           </label>
           <button

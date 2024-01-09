@@ -50,8 +50,8 @@ export default class NewTaskForm extends Component {
     const { onAddTask } = this.props;
 
     const timeInSeconds = inputMinutes * 60 + +inputSeconds;
-    /* e.preventDefault(); */
-    if (inputNewTask && (inputMinutes || inputSeconds)) {
+
+    if (inputNewTask && (inputMinutes > 0 || inputSeconds > 0)) {
       this.setState({
         inputNewTask: '',
         inputMinutes: '',

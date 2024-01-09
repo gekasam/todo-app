@@ -22,11 +22,22 @@ export default class Timer extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { taskStatus } = this.props;
+
+    if (taskStatus === 'completed' && taskStatus !== prevProps.taskStatus) this.handlerPause();
+  }
+
   componentWillUnmount() {
     clearInterval(this.timer);
   }
 
   handlerPlay() {
+    const { timerState } = this.state;
+
+    if (timerState) {
+      return;
+    }
     this.setState({
       timerState: 1,
     });
