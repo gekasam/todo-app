@@ -1,52 +1,37 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-export default class TaskFilter extends Component {
-  constructor() {
-    super();
-    this.state = {
-      activeFilter: 'all',
-    };
+export default function TaskFilter({ onFilter }) {
+  const [activeFilter, setActiveFilter] = useState('all');
 
-    this.handlerFilter = this.handlerFilter.bind(this);
-  }
-
-  handlerFilter(filter) {
-    const { onFilter } = this.props;
-
+  function handlerFilter(filter) {
     onFilter(filter);
-    this.setState({
-      activeFilter: filter,
-    });
+    setActiveFilter(filter);
   }
 
-  render() {
-    const { activeFilter } = this.state;
-
-    return (
-      <ul className="filters">
-        <li>
-          <FilterButton handlerFilter={() => this.handlerFilter('all')} isActive={activeFilter === 'all'}>
-            All
-          </FilterButton>
-        </li>
-        <li>
-          <FilterButton
-            handlerFilter={() => this.handlerFilter('active')}
-            isActive={activeFilter === 'active'}
-            text="Active"
-          />
-        </li>
-        <li>
-          <FilterButton
-            handlerFilter={() => this.handlerFilter('completed')}
-            isActive={activeFilter === 'completed'}
-            text="Completed"
-          />
-        </li>
-      </ul>
-    );
-  }
+  return (
+    <ul className="filters">
+      <li>
+        <FilterButton handlerFilter={() => handlerFilter('all')} isActive={activeFilter === 'all'}>
+          All
+        </FilterButton>
+      </li>
+      <li>
+        <FilterButton
+          handlerFilter={() => handlerFilter('active')}
+          isActive={activeFilter === 'active'}
+          text="Active"
+        />
+      </li>
+      <li>
+        <FilterButton
+          handlerFilter={() => handlerFilter('completed')}
+          isActive={activeFilter === 'completed'}
+          text="Completed"
+        />
+      </li>
+    </ul>
+  );
 }
 
 TaskFilter.propTypes = {
