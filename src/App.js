@@ -15,7 +15,7 @@ export default class App extends Component {
           value: 'Completed task',
           uid: uniqid.time('task-'),
           date: Date.now(),
-          timeToComplete: 10,
+          timeToComplete: 3,
         },
         {
           taskStatus: 'editing',

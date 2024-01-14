@@ -9,7 +9,6 @@ export default function TaskList({ data, filter, onToggleStatus, onDeleteTask, o
     if (filter === 'all' || (filter === 'active' && status === 'editing')) {
       return '';
     }
-
     return filter !== status ? ' hidden' : '';
   }
 
