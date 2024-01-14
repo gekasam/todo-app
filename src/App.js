@@ -1,151 +1,120 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import uniqid from 'uniqid';
 
 import NewTaskForm from './components/new-task-form';
 import TaskList from './components/task-list';
 import Footer from './components/footer';
 
-export default class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      taskData: [
-        {
-          taskStatus: 'completed',
-          value: 'Completed task',
-          uid: uniqid.time('task-'),
-          date: Date.now(),
-          timeToComplete: 3,
-        },
-        {
-          taskStatus: 'editing',
-          value: 'Try edit and press enter',
-          uid: uniqid.time('task-'),
-          date: Date.now(),
-          timeToComplete: 10,
-        },
-        { taskStatus: 'active', value: 'Active task', uid: uniqid.time('task-'), date: Date.now(), timeToComplete: 10 },
-      ],
-      filter: 'all',
-    };
+export default function App() {
+  const [taskData, setTaskData] = useState([
+    {
+      taskStatus: 'completed',
+      value: 'Completed task',
+      uid: uniqid.time('task-'),
+      date: Date.now(),
+      timeToComplete: 3,
+    },
+    {
+      taskStatus: 'editing',
+      value: 'Try edit and press enter',
+      uid: uniqid.time('task-'),
+      date: Date.now(),
+      timeToComplete: 10,
+    },
+    { taskStatus: 'active', value: 'Active task', uid: uniqid.time('task-'), date: Date.now(), timeToComplete: 10 },
+  ]);
+  const [filter, setFilter] = useState('all');
 
-    this.onAddTask = (value, timeInSeconds) => {
-      this.setState(({ taskData }) => {
-        const newTaskData = taskData.map((obj) => ({ ...obj }));
+  const onAddTask = (value, timeInSeconds) => {
+    setTaskData((prevTaskData) => {
+      const newTaskData = prevTaskData.map((obj) => ({ ...obj }));
 
-        newTaskData.unshift({
-          taskStatus: 'active',
-          value,
-          uid: uniqid.time('task-'),
-          date: Date.now(),
-          timeToComplete: timeInSeconds,
-        });
-        return {
-          taskData: newTaskData,
-        };
+      newTaskData.unshift({
+        taskStatus: 'active',
+        value,
+        uid: uniqid.time('task-'),
+        date: Date.now(),
+        timeToComplete: timeInSeconds,
       });
-    };
-
-    this.handleToggleStatus = (uid) => {
-      this.setState(({ taskData }) => {
-        const newTaskData = taskData.map((obj) => ({ ...obj }));
-        const idx = newTaskData.findIndex((element) => element.uid === uid);
-
-        if (newTaskData[idx].taskStatus === 'active') {
-          newTaskData[idx].taskStatus = 'completed';
-        } else {
-          newTaskData[idx].taskStatus = 'active';
-        }
-
-        return {
-          taskData: newTaskData,
-        };
-      });
-    };
-
-    this.handleDeleteTask = (uid) => {
-      this.setState(({ taskData }) => {
-        const newTaskData = taskData.map((obj) => ({ ...obj }));
-
-        return {
-          taskData: newTaskData.filter((element) => element.uid !== uid),
-        };
-      });
-    };
-
-    this.handleFilter = (filter) => {
-      this.setState({
-        filter,
-      });
-    };
-
-    this.handlerClearCompleted = () => {
-      this.setState(({ taskData }) => {
-        const newTaskData = taskData.map((obj) => ({ ...obj }));
-        return {
-          taskData: newTaskData.filter((element) => element.taskStatus !== 'completed'),
-        };
-      });
-    };
-
-    this.handleOnEditTask = (uid) => {
-      this.setState(({ taskData }) => {
-        const newTaskData = taskData.map((obj) => ({ ...obj }));
-        const idx = newTaskData.findIndex((element) => element.uid === uid);
-
-        newTaskData[idx].taskStatus = 'editing';
-        return {
-          taskData: newTaskData,
-        };
-      });
-    };
-
-    this.handleEditTask = (value, uid) => {
-      this.setState(({ taskData }) => {
-        const newTaskData = taskData.map((obj) => ({ ...obj }));
-        const idx = newTaskData.findIndex((element) => element.uid === uid);
-        newTaskData[idx].taskStatus = 'active';
-        newTaskData[idx].value = value;
-        return {
-          taskData: newTaskData,
-        };
-      });
-    };
-  }
-
-  taskCounter = () => {
-    const { taskData } = this.state;
-
-    return taskData.filter((element) => element.taskStatus === 'active').length;
+      return newTaskData;
+    });
   };
 
-  render() {
-    const { taskData, filter } = this.state;
+  const handleToggleStatus = (uid) => {
+    setTaskData((prevTaskData) => {
+      const newTaskData = prevTaskData.map((obj) => ({ ...obj }));
+      const idx = newTaskData.findIndex((element) => element.uid === uid);
 
-    return (
-      <div className="App">
-        <section className="todoapp">
-          <header className="header">
-            <h1>todos</h1>
-            <NewTaskForm onAddTask={this.onAddTask} />
-          </header>
-          <section className="main">
-            <TaskList
-              data={taskData}
-              filter={filter}
-              onToggleStatus={this.handleToggleStatus}
-              onDeleteTask={this.handleDeleteTask}
-              onEditTask={this.handleOnEditTask}
-              taskEdit={this.handleEditTask}
-            />
-            <Footer
-              onFilter={this.handleFilter}
-              taskCounter={this.taskCounter}
-              onClearCompleted={this.handlerClearCompleted}
-            />
-          </section>
+      if (newTaskData[idx].taskStatus === 'active') {
+        newTaskData[idx].taskStatus = 'completed';
+      } else {
+        newTaskData[idx].taskStatus = 'active';
+      }
+
+      return newTaskData;
+    });
+  };
+
+  const handleDeleteTask = (uid) => {
+    setTaskData((prevTaskData) => {
+      const newTaskData = prevTaskData.map((obj) => ({ ...obj }));
+
+      return newTaskData.filter((element) => element.uid !== uid);
+    });
+  };
+
+  const handleFilter = (valueFilter) => {
+    setFilter(valueFilter);
+  };
+
+  const handlerClearCompleted = () => {
+    setTaskData((prevTaskData) => {
+      const newTaskData = prevTaskData.map((obj) => ({ ...obj }));
+      return newTaskData.filter((element) => element.taskStatus !== 'completed');
+    });
+  };
+
+  const handleOnEditTask = (uid) => {
+    setTaskData((prevTaskData) => {
+      const newTaskData = prevTaskData.map((obj) => ({ ...obj }));
+      const idx = newTaskData.findIndex((element) => element.uid === uid);
+
+      newTaskData[idx].taskStatus = 'editing';
+      return newTaskData;
+    });
+  };
+
+  const handleEditTask = (value, uid) => {
+    setTaskData((prevTaskData) => {
+      const newTaskData = prevTaskData.map((obj) => ({ ...obj }));
+      const idx = newTaskData.findIndex((element) => element.uid === uid);
+      newTaskData[idx].taskStatus = 'active';
+      newTaskData[idx].value = value;
+      return newTaskData;
+    });
+  };
+
+  const taskCounter = () => taskData.filter((element) => element.taskStatus === 'active').length;
+
+  return (
+    <div className="App">
+      <section className="todoapp">
+        <header className="header">
+          <h1>todos</h1>
+          <NewTaskForm onAddTask={onAddTask} />
+        </header>
+        <section className="main">
+          <TaskList
+            data={taskData}
+            filter={filter}
+            onToggleStatus={handleToggleStatus}
+            onDeleteTask={handleDeleteTask}
+            onEditTask={handleOnEditTask}
+            taskEdit={handleEditTask}
+          />
+          <Footer onFilter={handleFilter} taskCounter={taskCounter} onClearCompleted={handlerClearCompleted} />
         </section>
-      </div>
-    );
-  }
+      </section>
+    </div>
+  );
 }
