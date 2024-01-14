@@ -1,71 +1,59 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import CreatedAgo from '../created-ago';
 import Timer from '../timer';
 import './Task.css';
 
-export default class Task extends Component {
-  constructor({ data: { value } }) {
-    super();
-    this.state = {
-      editValue: value,
-    };
+export default function Task({
+  data: { taskStatus, value, uid, date, timeToComplete },
+  onToggleStatus,
+  onDeleteTask,
+  onEditTask,
+  taskEdit,
+}) {
+  const [editValue, setEditValue] = useState(value);
 
-    this.checkedHandler = (status) => status !== 'active';
-    this.handlerEdit = this.handlerEdit.bind(this);
+  const checkedHandler = (status) => status !== 'active';
+
+  function handlerEdit(e) {
+    setEditValue(e.target.value);
   }
 
-  handlerEdit(e) {
-    this.setState({
-      editValue: e.target.value,
-    });
-  }
-
-  render() {
-    const {
-      data: { taskStatus, value, uid, date, timeToComplete },
-      onToggleStatus,
-      onDeleteTask,
-      onEditTask,
-      taskEdit,
-    } = this.props;
-    const { editValue } = this.state;
-    const editClass = `icon icon-edit${taskStatus === 'completed' ? ' disabled' : ''}`;
-    return (
-      <>
-        <div className="view">
-          <input
-            id={uid}
-            className="toggle"
-            type="checkbox"
-            checked={this.checkedHandler(taskStatus)}
-            onChange={() => onToggleStatus(uid)}
-          />
-          <label htmlFor={uid}>
-            <span className="title">{value}</span>
-            <Timer taskStatus={taskStatus} timeToComplete={timeToComplete} />
-            <CreatedAgo date={date} />
-          </label>
-          <button
-            type="button"
-            className={editClass}
-            onClick={() => onEditTask(uid)}
-            disabled={taskStatus === 'completed'}
-          />
-          <button type="button" className="icon icon-destroy" onClick={() => onDeleteTask(uid)} />
-        </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (editValue) taskEdit(editValue, uid);
-          }}
-        >
-          <input name="edit-input" type="text" className="edit" value={editValue} onChange={this.handlerEdit} />
-        </form>
-      </>
-    );
-  }
+  const editClass = `icon icon-edit${taskStatus === 'completed' ? ' disabled' : ''}`;
+  return (
+    <>
+      <div className="view">
+        <input
+          id={uid}
+          className="toggle"
+          type="checkbox"
+          checked={checkedHandler(taskStatus)}
+          onChange={() => onToggleStatus(uid)}
+        />
+        <label htmlFor={uid}>
+          <span className="title">{value}</span>
+          <Timer taskStatus={taskStatus} timeToComplete={timeToComplete} />
+          <CreatedAgo date={date} />
+        </label>
+        <button
+          type="button"
+          className={editClass}
+          onClick={() => onEditTask(uid)}
+          disabled={taskStatus === 'completed'}
+        />
+        <button type="button" className="icon icon-destroy" onClick={() => onDeleteTask(uid)} />
+      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (editValue) taskEdit(editValue, uid);
+        }}
+      >
+        <input name="edit-input" type="text" className="edit" value={editValue} onChange={handlerEdit} />
+      </form>
+    </>
+  );
 }
 
 Task.propTypes = {
